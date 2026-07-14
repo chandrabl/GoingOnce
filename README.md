@@ -5,10 +5,6 @@
 **A single-lot, live-bidding auction built on Stellar & Soroban smart contracts.**  
 *GoingOnce features a rising floor price, a countdown, and a brass-and-ledger paddle board where the high bid rolls forward instantly via real-time event syncing.*
 
-[![Stellar](https://img.shields.io/badge/Stellar-Soroban-blue.svg)](https://stellar.org/soroban)
-[![Vite](https://img.shields.io/badge/Frontend-Vite_React-purple.svg)](https://vitejs.dev/)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black.svg?logo=vercel)](https://going-once-delta.vercel.app/)
-
 ### 🚀 [▶️ Live App](https://going-once-delta.vercel.app/)
 
 </div>
@@ -48,15 +44,15 @@ The smart contract acts as the on-chain bidding ledger of record and is deployed
 
 ### 1. Product UI (Placing a Bid)
 
-![Product UI](images/product%20ui.png)
+![Product UI](images/product_ui.png)
 
 ### 2. Wallet Connection Options
 
-![Wallet Options](images/wallet%20options.png)
+![Wallet Options](images/wallet_options.png)
 
 ### 3. Verified Bid On-Chain
 
-![Verified Bid](images/verified%20bid.png)
+![Verified Bid](images/verified_bid.png)
 
 ---
 

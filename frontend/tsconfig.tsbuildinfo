@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/connectwallet.tsx","./src/components/countdown.tsx","./src/components/lotcard.tsx","./src/components/odometer.tsx","./src/components/txstatusbanner.tsx","./src/lib/contract.ts","./src/lib/errors.ts","./src/lib/wallet.ts"],"version":"5.9.3"}
