@@ -34,15 +34,16 @@ export interface AuctionState {
   ended: boolean;
 }
 
-export async function assertCanAffordFee(publicKey: string): Promise<void> {
+export async function getWalletBalance(publicKey: string): Promise<number> {
   const res = await fetch(`${HORIZON_URL}/accounts/${publicKey}`);
-  if (res.status === 404) {
-    throw new InsufficientBalanceError("0", String(MIN_XLM_FOR_FEES));
-  }
-  if (!res.ok) return;
+  if (!res.ok) return 0;
   const data = await res.json();
   const nativeBalance = data.balances?.find((b: any) => b.asset_type === "native");
-  const available = nativeBalance ? parseFloat(nativeBalance.balance) : 0;
+  return nativeBalance ? parseFloat(nativeBalance.balance) : 0;
+}
+
+export async function assertCanAffordFee(publicKey: string): Promise<void> {
+  const available = await getWalletBalance(publicKey);
   if (available < MIN_XLM_FOR_FEES) {
     throw new InsufficientBalanceError(available.toFixed(2), String(MIN_XLM_FOR_FEES));
   }

@@ -3,11 +3,12 @@ import { ConnectWallet } from "./components/ConnectWallet";
 import { LotCard } from "./components/LotCard";
 import { TxStatusBanner } from "./components/TxStatusBanner";
 import { connectWallet } from "./lib/wallet";
-import { placeBid, getAuction, subscribeToBidEvents, AuctionState, TxStatus, CONTRACT_ID } from "./lib/contract";
+import { placeBid, getAuction, getWalletBalance, subscribeToBidEvents, AuctionState, TxStatus, CONTRACT_ID } from "./lib/contract";
 import { classifyError } from "./lib/errors";
 
 export default function App() {
   const [address, setAddress] = useState<string | null>(null);
+  const [balance, setBalance] = useState<number | null>(null);
   const [connecting, setConnecting] = useState(false);
   const [auction, setAuction] = useState<AuctionState | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -32,7 +33,11 @@ export default function App() {
       try {
         setLoadError(null);
         const state = await getAuction(address);
-        if (!cancelled) setAuction(state);
+        const currentBalance = await getWalletBalance(address);
+        if (!cancelled) {
+          setAuction(state);
+          setBalance(currentBalance);
+        }
       } catch (err) {
         if (!cancelled) setLoadError(classifyError(err).message);
       }
@@ -58,6 +63,7 @@ export default function App() {
 
   function handleDisconnect() {
     setAddress(null);
+    setBalance(null);
     setAuction(null);
   }
 
@@ -68,8 +74,10 @@ export default function App() {
     setTxHash(null);
     try {
       const { hash, auction: updated } = await placeBid(address, amount, setTxStatus);
+      const currentBalance = await getWalletBalance(address);
       setTxHash(hash);
       setAuction(updated);
+      setBalance(currentBalance);
     } catch (err) {
       setErrorMessage(classifyError(err).message);
       setTxStatus("error");
@@ -85,7 +93,7 @@ export default function App() {
           <span className="app__brand-mark">GoingOnce</span>
           <span className="app__brand-sub">live on-chain auction · Soroban testnet</span>
         </div>
-        <ConnectWallet address={address} connecting={connecting} onConnect={handleConnect} onDisconnect={handleDisconnect} />
+        <ConnectWallet address={address} balance={balance} connecting={connecting} onConnect={handleConnect} onDisconnect={handleDisconnect} />
       </header>
 
       <TxStatusBanner status={txStatus} hash={txHash} errorMessage={txStatus === "error" ? errorMessage : null} />
