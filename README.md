@@ -1,139 +1,90 @@
-# GoingOnce
+<div align="center">
+  
+# 🔨 GoingOnce - Live On-Chain Auction
 
-A single-lot, live-bidding auction on Soroban. One lot, a rising floor
-price, a countdown to close, and a brass-and-ledger paddle board where
-the high bid rolls forward like a mechanical odometer the instant
-anyone outbids the room — driven entirely by contract events, not
-polling refreshes.
+**A single-lot, live-bidding auction built on Stellar & Soroban smart contracts.**  
+*GoingOnce features a rising floor price, a countdown, and a brass-and-ledger paddle board where the high bid rolls forward instantly via real-time event syncing.*
 
-Built for Level 2 (multi-wallet + smart-contract-deployment track):
-multi-wallet connect, a deployed testnet contract, frontend→contract
-calls, live event sync, and full transaction status tracking.
+[![Stellar](https://img.shields.io/badge/Stellar-Soroban-blue.svg)](https://stellar.org/soroban)
+[![Vite](https://img.shields.io/badge/Frontend-Vite_React-purple.svg)](https://vitejs.dev/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black.svg?logo=vercel)](https://going-once-delta.vercel.app/)
 
-## Why this project
+### 🚀 [▶️ Live App](https://going-once-delta.vercel.app/)
 
-| Requirement | Where it lives |
-|---|---|
-| Multi-wallet integration | `frontend/src/lib/wallet.ts` — StellarWalletsKit with Freighter, xBull, Albedo, Lobstr, Hana |
-| 3+ error types handled | `frontend/src/lib/errors.ts` — `WalletNotFoundError`, `UserRejectedError`, `InsufficientBalanceError`, `BidTooLowError`, `AuctionEndedError` |
-| Contract deployed on testnet | `contracts/goingonce/` + `scripts/deploy.sh` |
-| Contract called from frontend | `frontend/src/lib/contract.ts` — `bid`, `get_auction`, `end_auction` |
-| Transaction status visible | `frontend/src/components/TxStatusBanner.tsx` — building → simulating → pending → success/error |
-| Real-time event sync | `subscribeToBidEvents` polls Soroban RPC `getEvents` for `bid` topics; every connected viewer's odometer rolls forward the instant a new bid lands |
+</div>
 
-## A note on scope: this is a bidding ledger, not an escrow
+<br />
 
-`bid()` records the highest bid and bidder on-chain and enforces the
-increment/close-time rules, but it does not move XLM. Actually settling
-payment (transferring funds from the winning bidder, refunding outbid
-bidders automatically) would mean integrating the native asset's token
-contract and holding funds in escrow — a meaningfully bigger scope than
-a Level 2 project, and one that introduces real financial risk if
-rushed. Being upfront about this in the submission is safer than
-implying funds move when they don't. If you want to extend it, the
-natural next step is wiring `bid()` to a `token::Client::transfer` call
-against the native SAC, holding the bid in the contract's own account,
-and refunding the previous highest bidder inside the same call.
+## ✨ Key Features
 
-## Project structure
+1. **Multi-Wallet Integration:** Supports Freighter, xBull, Albedo, Lobstr, and Hana via StellarWalletsKit.
+2. **Real-time Event Sync:** `subscribeToBidEvents` polls the Soroban RPC; every viewer's odometer rolls forward the instant a new bid lands.
+3. **Transaction Status Tracking:** Visual pipeline moving from building → simulating → pending → success/error.
+4. **Comprehensive Error Handling:** Gracefully handles `WalletNotFoundError`, `UserRejectedError`, `InsufficientBalanceError`, `BidTooLowError`, and `AuctionEndedError`.
 
-```
-goingonce/
-├── contracts/
-│   └── goingonce/          # Soroban contract (Rust)
-│       ├── src/lib.rs
-│       └── src/test.rs
-├── frontend/                # React + Vite + TypeScript
-│   └── src/
-│       ├── lib/             # wallet.ts, contract.ts, errors.ts
-│       └── components/      # Odometer, Countdown, LotCard, ConnectWallet, TxStatusBanner
-└── scripts/
-    └── deploy.sh            # build → optimize → deploy → list the lot
-```
+---
 
-## Contract
+## 🌐 Smart Contract Deployment (Stellar Testnet)
 
-`contracts/goingonce/src/lib.rs` exposes:
+The smart contract acts as the on-chain bidding ledger of record and is deployed to the **Stellar Testnet**.
 
-- `initialize(admin, item_name, description, starting_price, min_increment, end_time)` — lists the lot once, at deploy time.
-- `bid(bidder, amount)` — requires the bidder's signature; enforces the floor (starting price, or current high + increment), blocks a bidder from outbidding themselves, and rejects bids after the close time. Emits a `bid` event with `(bidder, amount)`.
-- `end_auction(caller)` — the admin can close early; anyone can close once the end time has passed, so a stalled auction doesn't sit open waiting on the admin. Emits `ended` with the winner and final price.
-- `get_auction()` — reads the full lot state.
+| Contract | Contract ID | Explorer |
+|---|---|---|
+| 📜 **GoingOnce** | `CDP542OQHSRO6E5TGSBQZ3GCNELMUL6CTP4GC3SMAIW4MNU3G2VU5DOU` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CDP542OQHSRO6E5TGSBQZ3GCNELMUL6CTP4GC3SMAIW4MNU3G2VU5DOU) |
 
-Run the tests:
+**Network:** Stellar Testnet  
+**RPC URL:** `https://soroban-testnet.stellar.org`  
+**Horizon URL:** `https://horizon-testnet.stellar.org`  
 
-```bash
-cd contracts/goingonce
-cargo test
-```
+### 🔗 Sample On-Chain Transactions
 
-## Deploying the contract yourself
+| Action | Transaction Hash | Explorer |
+|---|---|---|
+| 💸 Bid Placed | `ef0c15d1f5488fd3ae01e03635f419ba778d5eba3f61c174bbfb6d4db13b27c0` | [View](https://stellar.expert/explorer/testnet/tx/ef0c15d1f5488fd3ae01e03635f419ba778d5eba3f61c174bbfb6d4db13b27c0) |
 
-You'll need [stellar-cli](https://developers.stellar.org/docs/tools/developer-tools/cli) and a funded testnet identity.
+---
 
-```bash
-stellar keys generate admin --network testnet --fund
-./scripts/deploy.sh "Vintage Star Chart" "Hand-inked celestial map, circa 1890" 1000 100 3600
-```
+## 📸 Application Showcase
 
-(That lists a lot starting at 1000 XLM, minimum 100 XLM raises, closing
-in one hour.) The script prints the deployed contract ID — put it in
-`frontend/.env` as `VITE_CONTRACT_ID`.
+### 1. Product UI (Placing a Bid)
 
-> Note: the contract address, transaction hash, and demo link below are
-> placeholders. Deploy with the script above and place a real bid to
-> get your own values — these only exist once you actually sign and
-> broadcast on testnet, so they can't be filled in for you.
+![Product UI](images/product%20ui.png)
 
-**Deployed contract address:** `CDP542OQHSRO6E5TGSBQZ3GCNELMUL6CTP4GC3SMAIW4MNU3G2VU5DOU`
-**Transaction hash of a bid call:** `ef0c15d1f5488fd3ae01e03635f419ba778d5eba3f61c174bbfb6d4db13b27c0` (verify at `https://stellar.expert/explorer/testnet/tx/ef0c15d1f5488fd3ae01e03635f419ba778d5eba3f61c174bbfb6d4db13b27c0`)
-**Live demo:** `https://going-once-delta.vercel.app/`
+### 2. Wallet Connection Options
 
-## Running the frontend locally
+![Wallet Options](images/wallet%20options.png)
 
+### 3. Verified Bid On-Chain
+
+![Verified Bid](images/verified%20bid.png)
+
+---
+
+## 🏗️ Architecture
+
+This project is split into three main components:
+
+1. **Smart Contract (`contracts/goingonce/`)**
+   - Written in Rust for Soroban.
+   - Exposes `initialize`, `bid`, `end_auction`, and `get_auction`.
+2. **Frontend Application (`frontend/`)**
+   - React + Vite Single Page Application.
+   - Integrates with `@creit.tech/stellar-wallets-kit`.
+3. **Deployment Scripts (`scripts/`)**
+   - Automates building, optimizing, deploying, and initializing the contract.
+
+---
+
+## 🚀 Quick Start (Local Development)
+
+### Prerequisites
+- Node.js (v18+)
+- Rust + `wasm32-unknown-unknown` target
+- Stellar CLI (`cargo install --locked stellar-cli`)
+
+### Running the Frontend
 ```bash
 cd frontend
 npm install
-cp .env.example .env   # then fill in VITE_CONTRACT_ID
 npm run dev
 ```
-
-Open the printed local URL, connect a wallet set to **Testnet**, and
-place a bid at or above the floor shown. Open the same URL in a second
-browser/tab with a different wallet to watch the odometer roll forward
-live as the other bid lands.
-
-## Error handling
-
-| Scenario | How it's surfaced |
-|---|---|
-| Wallet not installed | `WalletNotFoundError` — shown inline, doesn't crash the app |
-| Wallet rejects the signing prompt | `UserRejectedError` — caught around `signXdr` |
-| Insufficient XLM for fees | `InsufficientBalanceError` — checked via Horizon before the transaction is even built |
-| Bid too low / already leading | `BidTooLowError` — the contract itself enforces the floor; the frontend also disables the bid button below it |
-| Auction closed | `AuctionEndedError` — the contract rejects bids after `end_time`; the UI hides the bid form once the countdown hits zero |
-
-## Transaction status tracking
-
-Every bid moves through visible states in `TxStatusBanner`:
-`building` → `simulating` → `pending` → `success` (with a Stellar
-Expert link) or `error` (with the specific reason).
-
-## Deploying the frontend
-
-Any static host works (Vercel, Netlify, Cloudflare Pages). Build
-command `npm run build`, output directory `dist/`, set
-`VITE_CONTRACT_ID` as an environment variable in the host's dashboard.
-
-## Screenshots
-
-Here are some screenshots demonstrating the functionality:
-
-**Wallet Options:**
-![wallet options](./images/wallet%20options.png)
-
-**Product UI (Placing a Bid):**
-![product ui](./images/product%20ui.png)
-
-**Verified Bid on-chain:**
-![verified bid](./images/verified%20bid.png)
