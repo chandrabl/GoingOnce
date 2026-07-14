@@ -52,14 +52,14 @@ export function LotCard({ auction, connected, address, bidding, onBid }: LotCard
               step={auction.minIncrement}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              disabled={!connected || bidding}
+              disabled={!connected || bidding || isLeading}
             />
             <button
               className="house-btn"
               onClick={submit}
-              disabled={!connected || bidding || Number(input) < floor}
+              disabled={!connected || bidding || isLeading || Number(input) < floor}
             >
-              {bidding ? "bidding…" : "place bid"}
+              {isLeading ? "you're leading" : bidding ? "bidding…" : "place bid"}
             </button>
           </div>
         </div>
