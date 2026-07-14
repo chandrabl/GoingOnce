@@ -1,0 +1,367 @@
+:root {
+  --room: #16211c;
+  --room-deep: #0f1712;
+  --brass: #c9a227;
+  --brass-bright: #e0be55;
+  --burgundy: #8c2f39;
+  --ivory: #f2ead9;
+  --ivory-muted: #a9b3a8;
+  --card: #1e2b23;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Space Grotesk", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #1c2a22, var(--room-deep) 70%);
+  color: var(--ivory);
+  font-family: var(--font-body);
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid rgba(242, 234, 217, 0.08);
+}
+
+.app__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.app__brand-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--brass-bright);
+}
+
+.app__brand-sub {
+  font-size: 0.7rem;
+  color: var(--ivory-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.25rem 3rem;
+  gap: 1.5rem;
+}
+
+.app__footer {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--ivory-muted);
+  padding: 1rem;
+  border-top: 1px solid rgba(242, 234, 217, 0.08);
+}
+
+.app__footer code {
+  color: var(--brass);
+}
+
+/* ---- Buttons ---- */
+
+.house-btn {
+  background: var(--brass);
+  color: var(--room-deep);
+  border: none;
+  border-radius: 3px;
+  padding: 0.65rem 1.1rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.1s ease, filter 0.15s ease;
+}
+
+.house-btn:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.house-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.house-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.house-btn--ghost {
+  background: transparent;
+  border: 1px solid rgba(242, 234, 217, 0.25);
+  color: var(--ivory);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.house-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ivory-muted);
+}
+
+.house-dot--live {
+  background: #7cbf8a;
+  box-shadow: 0 0 6px #7cbf8a;
+}
+
+/* ---- Callouts ---- */
+
+.callout {
+  max-width: 640px;
+  width: 100%;
+  background: rgba(242, 234, 217, 0.05);
+  border: 1px solid rgba(242, 234, 217, 0.12);
+  border-radius: 6px;
+  padding: 0.9rem 1.1rem;
+  font-size: 0.85rem;
+  color: var(--ivory-muted);
+}
+
+.callout code {
+  color: var(--brass);
+}
+
+.callout--warn {
+  border-color: rgba(201, 162, 39, 0.4);
+  color: var(--brass-bright);
+}
+
+.callout--error {
+  border-color: rgba(140, 47, 57, 0.5);
+  color: #e59aa1;
+}
+
+/* ---- Status strip ---- */
+
+.status-strip {
+  width: 100%;
+  padding: 0.6rem 1.75rem;
+  font-size: 0.8rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(242, 234, 217, 0.08);
+}
+
+.status-strip--building,
+.status-strip--simulating,
+.status-strip--pending {
+  background: rgba(201, 162, 39, 0.14);
+  color: var(--brass-bright);
+}
+
+.status-strip--success {
+  background: rgba(124, 191, 138, 0.14);
+  color: #a7d9b1;
+}
+
+.status-strip--error {
+  background: rgba(140, 47, 57, 0.18);
+  color: #e59aa1;
+}
+
+.status-strip__link {
+  color: inherit;
+  text-decoration: underline;
+  margin-left: auto;
+}
+
+/* ---- Lot card ---- */
+
+.lot-card {
+  width: 100%;
+  max-width: 640px;
+  background: linear-gradient(180deg, var(--card), var(--room-deep));
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.lot-card__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.lot-card__title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 2rem;
+  margin: 0.3rem 0 0.6rem;
+  color: var(--ivory);
+}
+
+.lot-card__description {
+  color: var(--ivory-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+}
+
+.lot-card__bid-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.lot-card__bid-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ivory-muted);
+}
+
+.lot-card__bidder {
+  font-size: 0.75rem;
+  color: var(--ivory-muted);
+  font-family: var(--font-body);
+}
+
+.lot-card__bidder--you {
+  color: var(--brass-bright);
+  font-weight: 600;
+}
+
+.countdown {
+  display: block;
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--ivory-muted);
+  margin-bottom: 1.25rem;
+}
+
+.countdown--urgent {
+  color: var(--burgundy);
+  font-weight: 600;
+}
+
+.countdown--closed {
+  color: var(--burgundy);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.lot-card__bid-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.lot-card__min {
+  font-size: 0.7rem;
+  color: var(--ivory-muted);
+}
+
+.lot-card__input-row {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+.lot-card__input {
+  flex: 1;
+  background: rgba(242, 234, 217, 0.06);
+  border: 1px solid rgba(242, 234, 217, 0.2);
+  border-radius: 4px;
+  color: var(--ivory);
+  padding: 0.6rem 0.75rem;
+  font-size: 0.95rem;
+}
+
+.lot-card__input:focus {
+  outline: 2px solid var(--brass);
+  outline-offset: 1px;
+}
+
+/* ---- Odometer: the signature element ---- */
+
+.odometer {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+.odometer-prefix {
+  font-size: 1.2rem;
+  color: var(--brass);
+  margin-right: 4px;
+}
+
+.odometer-cell {
+  display: inline-block;
+  width: 26px;
+  height: 40px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+}
+
+.odometer-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.odometer-digit {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--brass-bright);
+}
+
+@media (max-width: 560px) {
+  .lot-card {
+    padding: 1.25rem;
+  }
+  .lot-card__title {
+    font-size: 1.5rem;
+  }
+}
