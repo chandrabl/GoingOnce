@@ -85,9 +85,9 @@ in one hour.) The script prints the deployed contract ID — put it in
 > get your own values — these only exist once you actually sign and
 > broadcast on testnet, so they can't be filled in for you.
 
-**Deployed contract address:** `PASTE_YOUR_CONTRACT_ID_HERE`
-**Transaction hash of a bid call:** `PASTE_A_TX_HASH_HERE` (verify at `https://stellar.expert/explorer/testnet/tx/<hash>`)
-**Live demo:** `PASTE_YOUR_VERCEL_OR_NETLIFY_URL_HERE`
+**Deployed contract address:** `CDP542OQHSRO6E5TGSBQZ3GCNELMUL6CTP4GC3SMAIW4MNU3G2VU5DOU`
+**Transaction hash of a bid call:** `ef0c15d1f5488fd3ae01e03635f419ba778d5eba3f61c174bbfb6d4db13b27c0` (verify at `https://stellar.expert/explorer/testnet/tx/ef0c15d1f5488fd3ae01e03635f419ba778d5eba3f61c174bbfb6d4db13b27c0`)
+**Live demo:** `https://going-once-delta.vercel.app/`
 
 ## Running the frontend locally
 
@@ -125,8 +125,15 @@ Any static host works (Vercel, Netlify, Cloudflare Pages). Build
 command `npm run build`, output directory `dist/`, set
 `VITE_CONTRACT_ID` as an environment variable in the host's dashboard.
 
-## Screenshot
+## Screenshots
 
-Add a screenshot of the wallet-select modal here before submitting:
+Here are some screenshots demonstrating the functionality:
 
-`![wallet options](./docs/wallet-options.png)`
+**Wallet Options:**
+![wallet options](./images/wallet%20options.png)
+
+**Product UI (Placing a Bid):**
+![product ui](./images/product%20ui.png)
+
+**Verified Bid on-chain:**
+![verified bid](./images/verified%20bid.png)
